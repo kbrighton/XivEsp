@@ -24,12 +24,15 @@ public class Plugin: IDalamudPlugin {
 		Service.ClientState.Login += this.PvpWarningCheck;
 		Service.ClientState.EnterPvP += this.PvpWarningCheck;
 		Service.ClientState.LeavePvP += this.PvpWarningCheck;
-		Service.ClientState.Logout += this.PvpWarningCheck;
+		Service.ClientState.Logout += this.PvpWarningWrapper;
 
 		if (Service.ClientState.IsLoggedIn)
 			this.PvpWarningCheck();
 	}
 
+	internal void PvpWarningWrapper(int type, int code) {
+		this.PvpWarningCheck();
+	}
 	internal void PvpWarningCheck() {
 		if (!Service.ClientState.IsLoggedIn || !Service.ClientState.IsPvP) {
 			this.wasInPvp = false;
